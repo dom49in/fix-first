@@ -1,0 +1,11 @@
+Fix First answers a question every public-works crew lead faces each morning: which open work orders should we take first, and why?
+
+It reads the District of Columbia Cityworks work-order data (CC BY 4.0) through Zetaris and ranks open orders by priority weight and by how many working days they are past their SLA target. Three agents work together. The Planner turns the question into a plan. The Executor runs a Meterless Markovian drill-down over the weighted backlog and drafts the answer. The Evaluator then re-checks the draft independently: it recomputes every breakdown and hot spot, re-scores the ranking, re-reads the holiday and weather calendars, checks that every number is grounded in a query result, that the answer leads with the top-ranked order, and that each claim's label matches its hot spot. If a check fails, the draft goes back for revision (up to two rounds); open issues stay visible and lower the confidence.
+
+Zetaris is the data layer: four sources in one SQL path (work orders with current and historical records, an SLA policy table derived from closed orders, and two web APIs registered as REST tables: public holidays and daily weather). A COUNT(1) pre-flight gate runs before any agent starts. The model never writes SQL.
+
+Meterless Nightshift (meterless/auto) is the model provider, and every request logs the model that handled it. In the four live runs it was routed to NVIDIA Nemotron. Meterless Markovian keeps prompts flat while the investigation deepens; H-MEM carries verified hot spots between questions and learns from Evaluator feedback.
+
+It states its limits plainly: the history is a small sample, weights and thresholds are assumptions, weather effects are too small to tell, and it cannot see crew capacity or budgets.
+
+Four live examples, JSONL traces, tests and a keyless sample mode are in the repo.

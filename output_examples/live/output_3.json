@@ -1,0 +1,769 @@
+{
+  "request_id": "ex3-triage",
+  "trace_id": "trace-20261026-322119b4",
+  "status": "success",
+  "preflight": {
+    "ready": true,
+    "checks": [
+      {
+        "role": "work_orders",
+        "required": true,
+        "table": "fixfirst.work_orders",
+        "rows": 2330,
+        "status": "ok",
+        "ms": 13839,
+        "expected_rows": 2330
+      },
+      {
+        "role": "sla_policy",
+        "required": true,
+        "table": "fixfirst.sla_policy",
+        "rows": 20,
+        "status": "ok",
+        "ms": 426
+      },
+      {
+        "role": "history",
+        "required": false,
+        "table": "fixfirst.work_orders (record_set = history_sample)",
+        "rows": 289,
+        "status": "ok",
+        "ms": 12822,
+        "expected_rows": 289
+      },
+      {
+        "role": "holidays",
+        "required": false,
+        "table": "fixfirst.us_holidays",
+        "rows": 44,
+        "status": "ok",
+        "ms": 669
+      },
+      {
+        "role": "weather",
+        "required": false,
+        "table": "fixfirst.weather_daily",
+        "rows": 1349,
+        "status": "ok",
+        "ms": 270
+      }
+    ],
+    "degraded": []
+  },
+  "agents_used": [
+    "PlannerAgent",
+    "ExecutorAgent",
+    "EvaluatorAgent"
+  ],
+  "result": {
+    "as_of": "2026-09-08",
+    "scope": "priority_level=0",
+    "totals": {
+      "orders": 283,
+      "points": 566.0,
+      "overdue_orders": 1,
+      "overdue_net_of_weather_orders": 1,
+      "unprioritised_orders": 283,
+      "oldest_age_working_days": 19
+    },
+    "summary": "1956543 EXPANSION NETWORK (priority 0, 19 working days old against a 7-day target, 12 days overdue) leads the city_priority_list. The 283 unprioritised orders require immediate triage, with SIGNWORKS JOB \u2013 CHILD (FABRICATION) the most frequent type (155 orders).",
+    "claims": [
+      {
+        "finding_id": "rank",
+        "statement": "city_priority_list ranks the three most urgent open work orders: 1956543 EXPANSION NETWORK (priority 0, 19 working days old against a 7-day target, 12 days overdue), 1972786 CONSTRUCTION INSPECTION (priority 0, 5 days old, on target), and 1968061 SIGNWORKS JOB \u2013 CHILD (FABRICATION) (priority 0, 9 days old, within 36-day target)."
+      },
+      {
+        "finding_id": "f1",
+        "statement": "Finding f1 covers 281 open orders in the TOA asset group under priority level 0, with 0 past SLA target (target 36 days from history); the top orders for dispatch are SIGNWORKS JOB \u2013 CHILD (FABRICATION), SIGNWORKS JOB - PARENT, and SIGNWORKS JOB \u2013 CHILD (INSTALLATION), all 9 working days old."
+      },
+      {
+        "finding_id": "f2",
+        "statement": "Finding f2 covers 279 open orders in the TOA-S&M category under priority level 0, with 0 past SLA target (target 36 days from history); the top orders for dispatch are SIGNWORKS JOB \u2013 CHILD (FABRICATION), SIGNWORKS JOB - PARENT, and SIGNWORKS JOB \u2013 CHILD (INSTALLATION), all 9 working days old."
+      },
+      {
+        "finding_id": "dq",
+        "statement": "283 open orders have no priority assigned and require triage before dispatch; they constitute 100% of all open orders."
+      },
+      {
+        "finding_id": "cal",
+        "statement": "Ages include 1 public holiday (Labour Day) and 3 weather-impacted working days; the overdue count of 1 remains unchanged after net-of-weather adjustment."
+      },
+      {
+        "finding_id": "hist",
+        "statement": "For the TOA asset group, the median time to close within cap is 2.0 working days (p75 36) based on 180 closed samples; however, weather effect data are insufficient (enough_data false) to determine if weather slows closures."
+      }
+    ],
+    "findings": [
+      {
+        "id": "f1",
+        "level": 0,
+        "dimension": "asset_group",
+        "member": "TOA",
+        "scope": "priority_level=0",
+        "orders": 281,
+        "weighted_points": 562.0,
+        "share_of_scope_backlog": 0.99293,
+        "share_of_total_backlog": 0.99293,
+        "lift_vs_order_share": 1.0,
+        "overdue_orders": 0,
+        "overdue_net_of_weather_orders": 0,
+        "unprioritised_orders": 281,
+        "oldest_age_working_days": 9,
+        "top_orders": [
+          {
+            "work_order_id": 1968061,
+            "description": "SIGNWORKS JOB \u2013 CHILD (FABRICATION)",
+            "asset_group": "TOA",
+            "ward": "4",
+            "priority_level": 0,
+            "age_working_days": 9,
+            "target_days": 36,
+            "overdue": false,
+            "score": 2.5,
+            "address": "5500 - 5503 BLOCK OF NORTH CAPITOL STREET"
+          },
+          {
+            "work_order_id": 1968077,
+            "description": "SIGNWORKS JOB - PARENT",
+            "asset_group": "TOA",
+            "ward": "5",
+            "priority_level": 0,
+            "age_working_days": 9,
+            "target_days": 36,
+            "overdue": false,
+            "score": 2.5,
+            "address": "1220 - 1299 BLOCK OF GALLATIN STREET NE"
+          },
+          {
+            "work_order_id": 1968078,
+            "description": "SIGNWORKS JOB \u2013 CHILD (INSTALLATION)",
+            "asset_group": "TOA",
+            "ward": "5",
+            "priority_level": 0,
+            "age_working_days": 9,
+            "target_days": 36,
+            "overdue": false,
+            "score": 2.5,
+            "address": "1220 - 1299 BLOCK OF GALLATIN STREET NE"
+          }
+        ],
+        "sources": [
+          "q11"
+        ]
+      },
+      {
+        "id": "f2",
+        "level": 1,
+        "dimension": "category",
+        "member": "TOA-S&M",
+        "scope": "priority_level=0 AND asset_group=TOA",
+        "orders": 279,
+        "weighted_points": 558.0,
+        "share_of_scope_backlog": 0.99288,
+        "share_of_total_backlog": 0.98587,
+        "lift_vs_order_share": 1.0,
+        "overdue_orders": 0,
+        "overdue_net_of_weather_orders": 0,
+        "unprioritised_orders": 279,
+        "oldest_age_working_days": 9,
+        "top_orders": [
+          {
+            "work_order_id": 1968061,
+            "description": "SIGNWORKS JOB \u2013 CHILD (FABRICATION)",
+            "asset_group": "TOA",
+            "ward": "4",
+            "priority_level": 0,
+            "age_working_days": 9,
+            "target_days": 36,
+            "overdue": false,
+            "score": 2.5,
+            "address": "5500 - 5503 BLOCK OF NORTH CAPITOL STREET"
+          },
+          {
+            "work_order_id": 1968077,
+            "description": "SIGNWORKS JOB - PARENT",
+            "asset_group": "TOA",
+            "ward": "5",
+            "priority_level": 0,
+            "age_working_days": 9,
+            "target_days": 36,
+            "overdue": false,
+            "score": 2.5,
+            "address": "1220 - 1299 BLOCK OF GALLATIN STREET NE"
+          },
+          {
+            "work_order_id": 1968078,
+            "description": "SIGNWORKS JOB \u2013 CHILD (INSTALLATION)",
+            "asset_group": "TOA",
+            "ward": "5",
+            "priority_level": 0,
+            "age_working_days": 9,
+            "target_days": 36,
+            "overdue": false,
+            "score": 2.5,
+            "address": "1220 - 1299 BLOCK OF GALLATIN STREET NE"
+          }
+        ],
+        "sources": [
+          "q15"
+        ]
+      }
+    ],
+    "priority_list": [
+      {
+        "work_order_id": 1956543,
+        "description": "EXPANSION NETWORK",
+        "asset_group": "Street Light Network",
+        "ward": "5",
+        "priority_level": 0,
+        "age_working_days": 19,
+        "target_days": 7,
+        "overdue": true,
+        "score": 7.43,
+        "address": "16 FLORIDA AVENUE NE"
+      },
+      {
+        "work_order_id": 1972786,
+        "description": "CONSTRUCTION INSPECTION",
+        "asset_group": "Street Light Network",
+        "ward": "7",
+        "priority_level": 0,
+        "age_working_days": 5,
+        "target_days": 7,
+        "overdue": false,
+        "score": 3.43,
+        "address": "PENNSYLVANIA AVENUE SE AND MINNESOTA AVENUE SE"
+      },
+      {
+        "work_order_id": 1968061,
+        "description": "SIGNWORKS JOB \u2013 CHILD (FABRICATION)",
+        "asset_group": "TOA",
+        "ward": "4",
+        "priority_level": 0,
+        "age_working_days": 9,
+        "target_days": 36,
+        "overdue": false,
+        "score": 2.5,
+        "address": "5500 - 5503 BLOCK OF NORTH CAPITOL STREET"
+      }
+    ],
+    "data_quality": {
+      "open_orders": 283,
+      "unprioritised_orders": 283,
+      "unprioritised_share": 1.0,
+      "top_unprioritised_types": [
+        {
+          "description": "SIGNWORKS JOB \u2013 CHILD (FABRICATION)",
+          "orders": 155
+        },
+        {
+          "description": "SIGNWORKS JOB - PARENT",
+          "orders": 95
+        },
+        {
+          "description": "SIGNWORKS JOB \u2013 CHILD (INSTALLATION)",
+          "orders": 31
+        }
+      ],
+      "policy_missing_orders": 0
+    },
+    "calendar": {
+      "as_of": "2026-09-08",
+      "span_start": "2026-08-11",
+      "holidays_in_span": 1,
+      "holiday_names_in_span": [
+        "Labour Day"
+      ],
+      "weather_impacted_working_days": 3,
+      "weather_reasons": [
+        "heavy rain"
+      ],
+      "next_holiday": {
+        "date": "2026-10-12",
+        "name": "Columbus Day",
+        "days_away": 34
+      },
+      "thresholds": {
+        "precip_mm": 10.0,
+        "wind_max_kmh": 50.0,
+        "temp_max_c": 35.0,
+        "temp_min_c": -5.0
+      },
+      "overdue_orders": 1,
+      "overdue_net_of_weather_orders": 1,
+      "weather_data_is_synthetic": false
+    },
+    "history_baseline": {
+      "closed_in_sample": 289,
+      "first_raised": "2023-06-22",
+      "last_raised": "2024-07-13",
+      "responsive_cap_working_days": 60,
+      "by_asset_group": [
+        {
+          "asset_group": "Street Light Network",
+          "closed_in_sample": 22,
+          "closed_within_cap": 20,
+          "share_within_cap": 0.9091,
+          "median_working_days_within_cap": 6.0,
+          "p75_working_days_within_cap": 7
+        },
+        {
+          "asset_group": "TOA",
+          "closed_in_sample": 180,
+          "closed_within_cap": 31,
+          "share_within_cap": 0.1722,
+          "median_working_days_within_cap": 2.0,
+          "p75_working_days_within_cap": 36
+        },
+        {
+          "asset_group": "UFA",
+          "closed_in_sample": 87,
+          "closed_within_cap": 32,
+          "share_within_cap": 0.3678,
+          "median_working_days_within_cap": 43.5,
+          "p75_working_days_within_cap": 45
+        }
+      ],
+      "weather_effect": {
+        "orders_raised_on_weather_days": 0,
+        "orders_raised_on_other_days": 83,
+        "median_days_weather": null,
+        "median_days_other": 6.0,
+        "enough_data": false
+      }
+    },
+    "policy": {
+      "unit": "working days",
+      "weights": "assumption (priority 5 most urgent)",
+      "targets_from_history_cells": 2,
+      "targets_assumed_cells": 0,
+      "targets": [
+        {
+          "asset_group": "Street Light Network",
+          "priority_level": 0,
+          "target_days": 7,
+          "source": "history"
+        },
+        {
+          "asset_group": "TOA",
+          "priority_level": 0,
+          "target_days": 36,
+          "source": "history"
+        }
+      ]
+    },
+    "ruled_out": [],
+    "coverage": 0.993,
+    "confidence": 0.95,
+    "caveats": [
+      "SLA targets: 2 of the 2 asset-group and priority cells used in this triage use the 75th percentile of closures within 60 working days from a sample of 289 closed historical orders; the rest are assumptions, and priority weights are assumptions. The sample is small, so treat targets as indicative, not DC policy.",
+      "Priority 5 is treated as the most urgent (EMERGENCY orders carry it in this extract); the source does not document the priority scale.",
+      "The data covers 3 August to 8 September 2026 only, and ages are measured to the last work order raised.",
+      "The ranking says where the weighted backlog and overdue work sit; it cannot see crew capacity, contracts or budgets, which are not in the data.",
+      "283 open orders (100%) have no priority; they are scored as medium urgency until someone triages them."
+    ],
+    "memory": {
+      "recalled": [],
+      "retrieval_trace": {
+        "retrievalReason": "no memory scored >= 0.25 out of 26",
+        "strategy": "none",
+        "threshold": 0.25,
+        "scored": 26,
+        "returned": []
+      },
+      "feedback_applied": [],
+      "stored": [
+        "mem-09a2cfd785",
+        "mem-584331cbf8"
+      ]
+    },
+    "evidence": [
+      {
+        "query_id": "q0",
+        "kind": "range",
+        "sql": "SELECT MAX(initiated_date) AS as_of, MIN(initiated_date) AS first_day, COUNT(1) AS n FROM fixfirst.work_orders WHERE record_set = 'active_fy2026'",
+        "rows_returned": 1,
+        "source": "zetaris",
+        "dimension": null,
+        "scope": [],
+        "truncated": false
+      },
+      {
+        "query_id": "q1",
+        "kind": "profile",
+        "sql": "SELECT COALESCE(w.asset_group, '(none)') AS member, COUNT(1) AS n_orders, SUM(COALESCE(p.weight, 1)) AS points FROM fixfirst.work_orders w LEFT JOIN fixfirst.sla_policy p ON p.asset_group = w.asset_group AND p.priority_level = COALESCE(w.priority, 0) WHERE w.status IN ('OPEN', '01-ASSIGNED', '02-INPROGRESS', 'PENDING') GROUP BY COALESCE(w.asset_group, '(none)')",
+        "rows_returned": 3,
+        "source": "zetaris",
+        "dimension": "asset_group",
+        "scope": [],
+        "truncated": false
+      },
+      {
+        "query_id": "q2",
+        "kind": "profile",
+        "sql": "SELECT COALESCE(w.ward, '(none)') AS member, COUNT(1) AS n_orders, SUM(COALESCE(p.weight, 1)) AS points FROM fixfirst.work_orders w LEFT JOIN fixfirst.sla_policy p ON p.asset_group = w.asset_group AND p.priority_level = COALESCE(w.priority, 0) WHERE w.status IN ('OPEN', '01-ASSIGNED', '02-INPROGRESS', 'PENDING') GROUP BY COALESCE(w.ward, '(none)')",
+        "rows_returned": 9,
+        "source": "zetaris",
+        "dimension": "ward",
+        "scope": [],
+        "truncated": false
+      },
+      {
+        "query_id": "q3",
+        "kind": "profile",
+        "sql": "SELECT COALESCE(w.category, '(none)') AS member, COUNT(1) AS n_orders, SUM(COALESCE(p.weight, 1)) AS points FROM fixfirst.work_orders w LEFT JOIN fixfirst.sla_policy p ON p.asset_group = w.asset_group AND p.priority_level = COALESCE(w.priority, 0) WHERE w.status IN ('OPEN', '01-ASSIGNED', '02-INPROGRESS', 'PENDING') GROUP BY COALESCE(w.category, '(none)')",
+        "rows_returned": 10,
+        "source": "zetaris",
+        "dimension": "category",
+        "scope": [],
+        "truncated": false
+      },
+      {
+        "query_id": "q4",
+        "kind": "profile",
+        "sql": "SELECT COALESCE(w.priority, 0) AS member, COUNT(1) AS n_orders, SUM(COALESCE(p.weight, 1)) AS points FROM fixfirst.work_orders w LEFT JOIN fixfirst.sla_policy p ON p.asset_group = w.asset_group AND p.priority_level = COALESCE(w.priority, 0) WHERE w.status IN ('OPEN', '01-ASSIGNED', '02-INPROGRESS', 'PENDING') GROUP BY COALESCE(w.priority, 0)",
+        "rows_returned": 4,
+        "source": "zetaris",
+        "dimension": "priority_level",
+        "scope": [],
+        "truncated": false
+      },
+      {
+        "query_id": "q5",
+        "kind": "profile",
+        "sql": "SELECT COALESCE(w.status, '(none)') AS member, COUNT(1) AS n_orders, SUM(COALESCE(p.weight, 1)) AS points FROM fixfirst.work_orders w LEFT JOIN fixfirst.sla_policy p ON p.asset_group = w.asset_group AND p.priority_level = COALESCE(w.priority, 0) WHERE w.status IN ('OPEN', '01-ASSIGNED', '02-INPROGRESS', 'PENDING') GROUP BY COALESCE(w.status, '(none)')",
+        "rows_returned": 4,
+        "source": "zetaris",
+        "dimension": "status",
+        "scope": [],
+        "truncated": false
+      },
+      {
+        "query_id": "q6",
+        "kind": "holidays",
+        "sql": "SELECT holiday_date, holiday_name FROM fixfirst.us_holidays ORDER BY holiday_date",
+        "rows_returned": 44,
+        "source": "zetaris",
+        "dimension": null,
+        "scope": [],
+        "truncated": false
+      },
+      {
+        "query_id": "q7",
+        "kind": "weather",
+        "sql": "SELECT weather_date, precip_mm, wind_max_kmh, temp_max_c, temp_min_c FROM fixfirst.weather_daily ORDER BY weather_date",
+        "rows_returned": 1349,
+        "source": "zetaris",
+        "dimension": null,
+        "scope": [],
+        "truncated": false
+      },
+      {
+        "query_id": "q8",
+        "kind": "history",
+        "sql": "SELECT w.asset_group AS asset_group, COALESCE(w.priority, 0) AS priority_level, w.initiated_date AS initiated_date, w.closed_date AS closed_date FROM fixfirst.work_orders w WHERE w.record_set = 'history_sample' AND w.closed_date IS NOT NULL AND COALESCE(w.is_canceled, 'N') <> 'Y' ORDER BY w.work_order_id",
+        "rows_returned": 289,
+        "source": "zetaris",
+        "dimension": null,
+        "scope": [],
+        "truncated": false
+      },
+      {
+        "query_id": "q9",
+        "kind": "total",
+        "sql": "SELECT COUNT(1) AS n_orders, SUM(COALESCE(p.weight, 1)) AS points FROM fixfirst.work_orders w LEFT JOIN fixfirst.sla_policy p ON p.asset_group = w.asset_group AND p.priority_level = COALESCE(w.priority, 0) WHERE w.status IN ('OPEN', '01-ASSIGNED', '02-INPROGRESS', 'PENDING') AND COALESCE(w.priority, 0) = 0",
+        "rows_returned": 1,
+        "source": "zetaris",
+        "dimension": null,
+        "scope": [
+          {
+            "dimension": "priority_level",
+            "member": "0"
+          }
+        ],
+        "truncated": false
+      },
+      {
+        "query_id": "q10",
+        "kind": "workset",
+        "sql": "SELECT w.work_order_id AS work_order_id, w.description AS description, w.status AS status, w.initiated_date AS initiated_date, COALESCE(w.priority, 0) AS priority_level, w.category AS category, w.asset_group AS asset_group, w.ward AS ward, w.address AS address, w.latitude AS latitude, w.longitude AS longitude, p.target_days AS target_days, COALESCE(p.weight, 1) AS weight, p.target_basis AS target_basis FROM fixfirst.work_orders w LEFT JOIN fixfirst.sla_policy p ON p.asset_group = w.asset_group AND p.priority_level = COALESCE(w.priority, 0) WHERE w.status IN ('OPEN', '01-ASSIGNED', '02-INPROGRESS', 'PENDING') AND COALESCE(w.priority, 0) = 0 ORDER BY w.work_order_id",
+        "rows_returned": 283,
+        "source": "zetaris",
+        "dimension": null,
+        "scope": [
+          {
+            "dimension": "priority_level",
+            "member": "0"
+          }
+        ],
+        "truncated": false
+      },
+      {
+        "query_id": "q11",
+        "kind": "breakdown",
+        "sql": "SELECT COALESCE(w.asset_group, '(none)') AS member, COUNT(1) AS n_orders, SUM(COALESCE(p.weight, 1)) AS points FROM fixfirst.work_orders w LEFT JOIN fixfirst.sla_policy p ON p.asset_group = w.asset_group AND p.priority_level = COALESCE(w.priority, 0) WHERE w.status IN ('OPEN', '01-ASSIGNED', '02-INPROGRESS', 'PENDING') AND COALESCE(w.priority, 0) = 0 GROUP BY COALESCE(w.asset_group, '(none)')",
+        "rows_returned": 2,
+        "source": "zetaris",
+        "dimension": "asset_group",
+        "scope": [
+          {
+            "dimension": "priority_level",
+            "member": "0"
+          }
+        ],
+        "truncated": false
+      },
+      {
+        "query_id": "q12",
+        "kind": "breakdown",
+        "sql": "SELECT COALESCE(w.ward, '(none)') AS member, COUNT(1) AS n_orders, SUM(COALESCE(p.weight, 1)) AS points FROM fixfirst.work_orders w LEFT JOIN fixfirst.sla_policy p ON p.asset_group = w.asset_group AND p.priority_level = COALESCE(w.priority, 0) WHERE w.status IN ('OPEN', '01-ASSIGNED', '02-INPROGRESS', 'PENDING') AND COALESCE(w.priority, 0) = 0 GROUP BY COALESCE(w.ward, '(none)')",
+        "rows_returned": 8,
+        "source": "zetaris",
+        "dimension": "ward",
+        "scope": [
+          {
+            "dimension": "priority_level",
+            "member": "0"
+          }
+        ],
+        "truncated": false
+      },
+      {
+        "query_id": "q13",
+        "kind": "breakdown",
+        "sql": "SELECT COALESCE(w.category, '(none)') AS member, COUNT(1) AS n_orders, SUM(COALESCE(p.weight, 1)) AS points FROM fixfirst.work_orders w LEFT JOIN fixfirst.sla_policy p ON p.asset_group = w.asset_group AND p.priority_level = COALESCE(w.priority, 0) WHERE w.status IN ('OPEN', '01-ASSIGNED', '02-INPROGRESS', 'PENDING') AND COALESCE(w.priority, 0) = 0 GROUP BY COALESCE(w.category, '(none)')",
+        "rows_returned": 2,
+        "source": "zetaris",
+        "dimension": "category",
+        "scope": [
+          {
+            "dimension": "priority_level",
+            "member": "0"
+          }
+        ],
+        "truncated": false
+      },
+      {
+        "query_id": "q14",
+        "kind": "breakdown",
+        "sql": "SELECT COALESCE(w.ward, '(none)') AS member, COUNT(1) AS n_orders, SUM(COALESCE(p.weight, 1)) AS points FROM fixfirst.work_orders w LEFT JOIN fixfirst.sla_policy p ON p.asset_group = w.asset_group AND p.priority_level = COALESCE(w.priority, 0) WHERE w.status IN ('OPEN', '01-ASSIGNED', '02-INPROGRESS', 'PENDING') AND COALESCE(w.priority, 0) = 0 AND w.asset_group = 'TOA' GROUP BY COALESCE(w.ward, '(none)')",
+        "rows_returned": 8,
+        "source": "zetaris",
+        "dimension": "ward",
+        "scope": [
+          {
+            "dimension": "priority_level",
+            "member": "0"
+          },
+          {
+            "dimension": "asset_group",
+            "member": "TOA"
+          }
+        ],
+        "truncated": false
+      },
+      {
+        "query_id": "q15",
+        "kind": "breakdown",
+        "sql": "SELECT COALESCE(w.category, '(none)') AS member, COUNT(1) AS n_orders, SUM(COALESCE(p.weight, 1)) AS points FROM fixfirst.work_orders w LEFT JOIN fixfirst.sla_policy p ON p.asset_group = w.asset_group AND p.priority_level = COALESCE(w.priority, 0) WHERE w.status IN ('OPEN', '01-ASSIGNED', '02-INPROGRESS', 'PENDING') AND COALESCE(w.priority, 0) = 0 AND w.asset_group = 'TOA' GROUP BY COALESCE(w.category, '(none)')",
+        "rows_returned": 2,
+        "source": "zetaris",
+        "dimension": "category",
+        "scope": [
+          {
+            "dimension": "priority_level",
+            "member": "0"
+          },
+          {
+            "dimension": "asset_group",
+            "member": "TOA"
+          }
+        ],
+        "truncated": false
+      }
+    ]
+  },
+  "collaboration": {
+    "feedback_loop_completed": true,
+    "evaluator_reviews": 1,
+    "critiques_issued": 0,
+    "revision_count": 0,
+    "evaluator_findings": [],
+    "unresolved_issues": [],
+    "final_checks": {
+      "workset_matches_zetaris": true,
+      "breakdowns_recomputed": true,
+      "hotspots_recomputed": true,
+      "ranking_rescored": true,
+      "calendar_reread": true,
+      "history_reread": true,
+      "not_truncated": true,
+      "numbers_grounded": true,
+      "leads_with_top_ranked": true,
+      "claim_labels_match": true,
+      "all_findings_cited": true,
+      "data_quality_disclosed": true,
+      "coverage": 0.993,
+      "model_critic_flags": 0
+    }
+  },
+  "engines": {
+    "markovian": {
+      "name": "markovian",
+      "implementation": "python, spec-aligned (see app/engines/markovian.py); TS conformance not run",
+      "chunk_config": {
+        "chunk_size": 3000,
+        "max_chunks": 12,
+        "carryover_tokens": 256,
+        "overlap_tokens": 0
+      },
+      "steps": 7,
+      "prompt_chars_per_step": [
+        1748,
+        2144,
+        2551,
+        2224,
+        2136,
+        2568,
+        2243
+      ],
+      "max_prompt_chars": 2568,
+      "carryover_cascade_levels": [
+        "explicit",
+        "explicit",
+        "explicit",
+        "explicit",
+        "explicit",
+        "explicit",
+        "explicit"
+      ],
+      "carryover_tokens_per_step": [
+        158,
+        165,
+        174,
+        187,
+        163,
+        168,
+        182
+      ],
+      "chunk_tokens": [
+        60,
+        130,
+        55,
+        29,
+        126,
+        52,
+        24
+      ],
+      "efficiency": {
+        "total_tokens_used": 476,
+        "standard_cost": 2097,
+        "markovian_cost": 2268,
+        "tokens_saved": 0,
+        "efficiency_percent": 0.0
+      },
+      "efficiency_using_actual_carryover": {
+        "markovian_cost": 1673,
+        "tokens_saved": 424,
+        "efficiency_percent": 20.219360991893183
+      },
+      "token_label": "estimated",
+      "measured_prompt_tokens_per_step": [
+        712,
+        885,
+        1101,
+        924,
+        888,
+        1111,
+        934
+      ],
+      "action_fallbacks": 0,
+      "note": "efficiency uses spec 6.3: standard cost replays every prior chunk; Markovian cost is steps x carryover_tokens + tokens used. It can be 0 for short chains.",
+      "run": {
+        "id": "78e39b01-c2d2-4aa7-b54b-d66bab512aed",
+        "status": "completed",
+        "totalTokensUsed": 476,
+        "totalTokensSaved": 0,
+        "efficiencyPercent": 0.0,
+        "durationMs": 833150
+      },
+      "cumulative": {
+        "totalRuns": 11,
+        "completedRuns": 11,
+        "totalTokensUsed": 4585,
+        "totalTokensSaved": 924,
+        "averageEfficiency": 2.813636363636364,
+        "totalChunksProcessed": 68,
+        "lastRunTimestamp": 1793026161777,
+        "efficiencyHistory": [
+          {
+            "timestamp": 1792985250839,
+            "efficiency": 0.0,
+            "tokensSaved": 0
+          },
+          {
+            "timestamp": 1793011870807,
+            "efficiency": 0.0,
+            "tokensSaved": 0
+          },
+          {
+            "timestamp": 1793011871188,
+            "efficiency": 9.64,
+            "tokensSaved": 249
+          },
+          {
+            "timestamp": 1793011878730,
+            "efficiency": 0.0,
+            "tokensSaved": 0
+          },
+          {
+            "timestamp": 1793020614094,
+            "efficiency": 0.0,
+            "tokensSaved": 0
+          },
+          {
+            "timestamp": 1793020614501,
+            "efficiency": 0.0,
+            "tokensSaved": 0
+          },
+          {
+            "timestamp": 1793020614926,
+            "efficiency": 0.0,
+            "tokensSaved": 0
+          },
+          {
+            "timestamp": 1793020615359,
+            "efficiency": 2.67,
+            "tokensSaved": 64
+          },
+          {
+            "timestamp": 1793024224466,
+            "efficiency": 18.64,
+            "tokensSaved": 611
+          },
+          {
+            "timestamp": 1793025328247,
+            "efficiency": 0.0,
+            "tokensSaved": 0
+          },
+          {
+            "timestamp": 1793026161777,
+            "efficiency": 0.0,
+            "tokensSaved": 0
+          }
+        ]
+      }
+    },
+    "h_mem": {
+      "recalled": 0,
+      "feedback": [],
+      "stored": 2
+    }
+  },
+  "models_used": [
+    "nvidia/nemotron-3.5-lightning-30b-a3b"
+  ],
+  "reasoning_mode": "nightshift",
+  "data_source": "zetaris",
+  "log_path": "logs/trace-20261026-322119b4.jsonl"
+}

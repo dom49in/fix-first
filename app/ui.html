@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fix First</title>
+<style>
+:root{--bg:#F4F6F8;--fg:#14202B;--mut:#52606D;--card:#fff;--line:#D5DCE3;--acc:#0B6E99;--ok:#2F855A;--bad:#C53030;--warn:#B7791F}
+@media(prefers-color-scheme:dark){:root{--bg:#10181F;--fg:#EDF2F7;--mut:#A0AEC0;--card:#18232D;--line:#2A3A48;--acc:#63B3ED;--ok:#68D391;--bad:#FC8181;--warn:#F6C453}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,sans-serif}
+main{max-width:920px;margin:0 auto;padding:24px 16px 64px}h1{margin:0 0 4px;font-size:28px}
+.sub{color:var(--mut);margin:0 0 16px}.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:14px 0}
+form{display:flex;gap:8px;flex-wrap:wrap}input{flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg);font:inherit}
+button{padding:10px 16px;border:0;border-radius:8px;background:var(--acc);color:#fff;font-weight:700;cursor:pointer}button:disabled{opacity:.5}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.chip{background:none;border:1px solid var(--line);color:var(--mut);font-weight:400;font-size:13px}
+h2{font-size:14px;margin:0 0 8px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}
+.big{font-size:19px}.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc)}
+.row{display:flex;justify-content:space-between;gap:12px;margin:6px 0;flex-wrap:wrap}.tag{font-size:12px;padding:2px 8px;border-radius:99px;border:1px solid var(--line)}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}small,.mut{color:var(--mut)}ul{margin:6px 0;padding-left:20px}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}th{color:var(--mut);font-weight:600}
+.banner{border-left:4px solid var(--acc);padding:8px 12px;margin:12px 0;background:var(--card);border-radius:4px;font-size:14px}
+</style></head><body><main>
+<h1>Fix First</h1>
+<p class="sub">Which open work orders should crews take first, and why? Every number is queried from Zetaris and re-checked; the model never writes SQL.</p>
+<div id="data" class="banner">Checking that the data is loaded in Zetaris…</div>
+<form id="f"><input id="q" aria-label="Question" value="Which open work orders should crews fix first across the city, and where is the weighted backlog concentrated?"><button id="go">Triage</button></form>
+<div class="chips" id="chips"></div>
+<div id="mode" class="banner" hidden></div>
+<div id="out" aria-live="polite"></div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n).toLocaleString(undefined,{maximumFractionDigits:2});
+const pct=n=>n==null?"–":Math.round(n*100)+"%";
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+["Which open work orders should crews fix first across the city, and where is the weighted backlog concentrated?","What should the Ward 7 crews take first, and which of those orders are overdue?","Where are we blind: which open work orders have no priority and what should be triaged first?","Give me the top 10 transportation (TOA) work orders to dispatch first, and tell me whether weather explains any of the delay."].forEach(t=>{
+ const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=t.length>60?t.slice(0,57)+"…":t;b.title=t;b.onclick=()=>{$("q").value=t;$("f").requestSubmit()};$("chips").append(b)});
+fetch("/health").then(r=>r.json()).then(h=>{if(h.sample_mode){$("mode").hidden=false;$("mode").textContent="Sample mode: data comes from local CSVs (weather is synthetic) and reasoning from offline rules, not a live model. Not a live run."}}).catch(()=>{});
+fetch("/health/data").then(r=>r.json()).then(d=>{const el=$("data");
+ el.innerHTML=(d.ready?'<b class="ok">Data confirmed</b> in '+esc(d.source)+': ':'<b class="bad">Data not ready.</b> ')+(d.checks||[]).map(c=>esc(c.role)+" "+(c.rows==null?esc(c.status):fmt(c.rows)+" rows")).join(" · ")+(d.degraded&&d.degraded.length?' <span class="warn">(degraded: '+esc(d.degraded.join(", "))+')</span>':"");
+ $("go").disabled=!d.ready}).catch(()=>{$("data").textContent="Could not reach the server."});
+$("f").onsubmit=async e=>{e.preventDefault();$("go").disabled=true;$("out").innerHTML='<p class="mut">Triaging…</p>';
+ try{const r=await fetch("/run",{method:"POST",body:JSON.stringify({request_id:"ui-"+Date.now(),user_query:$("q").value,context:{}})});render(await r.json())}
+ catch(x){$("out").innerHTML='<div class="card bad">Request failed.</div>'}$("go").disabled=false};
+function orders(list){return '<table><tr><th>Order</th><th>Work</th><th>Ward</th><th>Prio</th><th>Age (wd)</th><th>Target</th><th>Score</th></tr>'+list.map(o=>`<tr><td>${esc(o.work_order_id)}</td><td>${esc(o.description)}<br><small>${esc(o.address)}</small></td><td>${esc(o.ward)}</td><td>${o.priority_level||"–"}</td><td class="${o.overdue?"bad":""}">${o.age_working_days}</td><td>${o.target_days}</td><td>${o.score}</td></tr>`).join("")+'</table>'}
+function render(d){
+ if(d.status!=="success"){const e=d.error||{};$("out").innerHTML=`<div class="card"><h2>Could not answer</h2><p class="bad">${esc(e.message||"Unknown error")}</p><small>${esc(e.type||"")} ${esc(e.stage||"")}</small></div>`;return}
+ const r=d.result,c=d.collaboration,t=r.totals;
+ let h=`<div class="card"><h2>Answer</h2><p class="big">${esc(r.summary)}</p>
+ <div class="row"><span>Scope: <b>${esc(r.scope)}</b></span><span>As of <b>${esc(r.as_of)}</b></span><span>Open: <b>${t.orders}</b></span><span>Overdue: <b>${t.overdue_orders}</b> (<b>${t.overdue_net_of_weather_orders}</b> net of weather)</span><span>Confidence: <b>${r.confidence}</b></span></div></div>`;
+ h+='<div class="card"><h2>Hot spots</h2>'+(r.findings.length?r.findings.map(f=>`<div style="margin:10px 0"><div class="row"><b>${esc(f.dimension)} = ${esc(f.member)}</b><span>${pct(f.share_of_total_backlog)} of backlog · ${f.orders} orders · ${f.overdue_orders} overdue</span></div><div class="bar"><i style="width:${Math.round((f.share_of_total_backlog||0)*100)}%"></i></div><small>${esc(f.scope)} · ${f.unprioritised_orders} unprioritised · oldest ${f.oldest_age_working_days} working days · source ${esc(f.sources.join(","))}</small></div>`).join(""):"<p class='mut'>No segment concentrates the backlog.</p>")+"</div>";
+ h+='<div class="card"><h2>Fix first</h2>'+orders(r.priority_list)+'</div>';
+ h+='<div class="card"><h2>Claims</h2><ul>'+r.claims.map(x=>`<li><span class="tag">${esc(x.finding_id)}</span> ${esc(x.statement)}</li>`).join("")+'</ul></div>';
+ const dq=r.data_quality,cal=r.calendar;
+ h+=`<div class="card"><h2>Data quality and calendar</h2><p>${dq.unprioritised_orders} open orders (${pct(dq.unprioritised_share)}) have no priority. ${cal.holidays_in_span} public holiday(s) and ${cal.weather_impacted_working_days} weather-impacted working day(s) in the period${cal.weather_data_is_synthetic?' <b class="warn">(synthetic weather: sample mode)</b>':""}.</p></div>`;
+ const hb=r.history_baseline||{};
+ if(hb.by_asset_group&&hb.by_asset_group.length){h+='<div class="card"><h2>Historical baseline</h2><table><tr><th>Asset group</th><th>Closed in sample</th><th>Within cap</th><th>Median days</th><th>P75 days</th></tr>'+hb.by_asset_group.map(g=>`<tr><td>${esc(g.asset_group)}</td><td>${g.closed_in_sample}</td><td>${g.closed_within_cap}</td><td>${g.median_working_days_within_cap??"–"}</td><td>${g.p75_working_days_within_cap??"–"}</td></tr>`).join("")+`</table><small>Working days to close, ${esc(hb.first_raised)} to ${esc(hb.last_raised)}. Weather comparison: ${hb.weather_effect.enough_data?"enough data":"sample too small to tell"}.</small></div>`}
+ h+=`<div class="card"><h2>How it was checked</h2><div class="row"><span>Feedback loop: <b class="${c.feedback_loop_completed?"ok":"bad"}">${c.feedback_loop_completed?"completed":"unresolved"}</b></span><span>Reviews ${c.evaluator_reviews} · revisions ${c.revision_count}</span><span>Models: ${esc(d.models_used.join(", "))}</span><span>Data: ${esc(d.data_source)}</span></div><ul>`+Object.entries(c.final_checks).map(([k,v])=>`<li>${esc(k)}: <b class="${v===false?"bad":"ok"}">${esc(v)}</b></li>`).join("")+`</ul><small>Markovian ${d.engines.markovian.steps} steps, max prompt ${d.engines.markovian.max_prompt_chars} chars · H-MEM recalled ${d.engines.h_mem.recalled}, stored ${d.engines.h_mem.stored} · trace ${esc(d.trace_id)}</small></div>`;
+ h+='<div class="card"><h2>Caveats</h2><ul>'+r.caveats.map(x=>`<li>${esc(x)}</li>`).join("")+'</ul></div>';
+ $("out").innerHTML=h}
+</script></body></html>

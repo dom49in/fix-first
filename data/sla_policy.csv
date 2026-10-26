@@ -1,0 +1,21 @@
+asset_group,priority_level,target_days,weight,target_basis,n_obs
+Street Light Network,5,7,5,"empirical, asset-group level: P75 of 20 closures within 60 working days (22 closed in sample); too few for this priority",20
+Street Light Network,4,7,3,empirical: P75 of 19 closures within 60 working days (21 closed in sample),19
+Street Light Network,3,7,2,"empirical, asset-group level: P75 of 20 closures within 60 working days (22 closed in sample); too few for this priority",20
+Street Light Network,1,7,1,"empirical, asset-group level: P75 of 20 closures within 60 working days (22 closed in sample); too few for this priority",20
+Street Light Network,0,7,2,"empirical, asset-group level: P75 of 20 closures within 60 working days (22 closed in sample); too few for this priority",20
+TOA,5,1,5,"empirical, asset-group level: P75 of 31 closures within 60 working days (180 closed in sample); too few for this priority; capped to the P4 target",31
+TOA,4,1,3,empirical: P75 of 13 closures within 60 working days (15 closed in sample),13
+TOA,3,36,2,"empirical, asset-group level: P75 of 31 closures within 60 working days (180 closed in sample); too few for this priority",31
+TOA,1,36,1,"empirical, asset-group level: P75 of 31 closures within 60 working days (180 closed in sample); too few for this priority",31
+TOA,0,36,2,empirical: P75 of 15 closures within 60 working days (149 closed in sample),15
+UFA,5,1,5,empirical: P75 of 13 closures within 60 working days (15 closed in sample),13
+UFA,4,45,3,"empirical, asset-group level: P75 of 32 closures within 60 working days (87 closed in sample); too few for this priority",32
+UFA,3,45,2,empirical: P75 of 19 closures within 60 working days (72 closed in sample),19
+UFA,1,45,1,"empirical, asset-group level: P75 of 32 closures within 60 working days (87 closed in sample); too few for this priority",32
+UFA,0,45,2,"empirical, asset-group level: P75 of 32 closures within 60 working days (87 closed in sample); too few for this priority",32
+AMIS & RMCS,5,5,5,illustrative assumption: too few closed orders in the sample,0
+AMIS & RMCS,4,15,3,illustrative assumption: too few closed orders in the sample,0
+AMIS & RMCS,3,20,2,illustrative assumption: too few closed orders in the sample,0
+AMIS & RMCS,1,30,1,illustrative assumption: too few closed orders in the sample,0
+AMIS & RMCS,0,15,2,illustrative assumption: too few closed orders in the sample,0
