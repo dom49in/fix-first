@@ -1,6 +1,7 @@
 # Submission pack: "Fix First"
 
 Track: **Reasoning Architecture** · Open Agent Hackathon 2026 · Solo team DMax
+
 Repository:(https://github.com/dom49in/fix-first.git)
 
 A maintenance-triage agent that decides which open work orders crews should take first, and shows its reasoning. Three agents (Planner, Executor, Evaluator) work in a feedback loop over **four Zetaris sources** (work orders with current and historical records, an SLA policy table derived from the history, and two web APIs registered as Zetaris REST tables: public holidays and weather). Model calls go through Meterless Nightshift, with the NVIDIA lane configured there. Meterless Markovian and H-MEM run inside the loop. Setup, usage and dependencies are in the [README](README.md). Data: DC Cityworks Workorders (District of Columbia), CC BY 4.0; credit and changes are in the README.
